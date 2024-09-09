@@ -1,0 +1,6 @@
+model_path: null
+source_path: null
+
+eval_on_gg: !!bool False # Evaluation using the Gaussian Grouping model
+gg_ckpt_folder: null # Path to the pretrained Guassian Grouping model
+

@@ -1,0 +1,11 @@
+model_path: null
+source_path: null # If set, it will be used to override the source_path in the saved ckpt file
+render_subset: "trainvalid"
+save_ext: "jpg"
+image_size: 768
+fps: 20
+
+eval_on_gg: !!bool False
+gg_ckpt_folder: null
+
+no_render_feat: !!bool False # If True, do not render feature maps anyhow

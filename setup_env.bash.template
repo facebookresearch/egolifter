@@ -1,0 +1,17 @@
+# You probably only need to change the following 1-2 lines
+export EGOLIFTER_PATH=${HOME}/src/egolifter/
+export GSA_PATH=${EGOLIFTER_PATH}/Grounded-Segment-Anything/
+
+# Paths related to GroundedSAM
+export SAM_CHECKPOINT_PATH=${GSA_PATH}/sam_vit_h_4b8939.pth
+export GROUNDING_DINO_CHECKPOINT_PATH=${GSA_PATH}/groundingdino_swint_ogc.pth
+
+# TODO: change below when we are actually going to use them
+export TAG2TEXT_CHECKPOINT_PATH=${TAG2TEXT_PATH}/tag2text_swin_14m.pth
+export RAM_CHECKPOINT_PATH=${TAG2TEXT_PATH}/ram_swin_large_14m.pth
+
+# You probably won't need to change the following
+export SAM_ENCODER_VERSION=vit_h
+export GROUNDING_DINO_CONFIG_PATH=${GSA_PATH}/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py
+export EFFICIENTSAM_PATH=${GSA_PATH}/EfficientSAM/
+export TAG2TEXT_PATH=${GSA_PATH}/Tag2Text/

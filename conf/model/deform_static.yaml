@@ -1,0 +1,7 @@
+defaults:
+  - deform
+
+name: "deform_static"
+
+load_static_folder: null
+filter_dist_thresh: 0.03

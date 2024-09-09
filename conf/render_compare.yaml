@@ -1,0 +1,11 @@
+model_1_path: null
+model_2_path: null
+model_3_path: null
+model_1_name: ""
+model_2_name: ""
+model_3_name: ""
+image_size: 768
+render_subset: "trainvalid"
+save_ext: "jpg"
+
+source_path: null
