@@ -1,0 +1,72 @@
+defaults:
+  - opt: vanilla30k
+  - model: vanilla
+
+ip: "127.0.0.1"
+port: 6009
+debug_from: -1
+detect_anomaly: !!bool False
+quiet: !!bool False
+start_checkpoint: null
+load_ply: null # If set, the Gaussians will be initialized from the given PLY file.
+render_video: !!bool False
+exp_name: "exp"
+output_root: "./output"
+seed: 42
+gpus: 1 # Passed to the Trainer in Lightning
+
+skip_test: !!bool False # If set, the test() will be skipped for fast experiment
+log_cam_stats: !!bool False
+
+hydra:
+  run:
+    dir: ${output_root}/${scene.scene_name}/${model.name}_${exp_name}/${now:%Y-%m-%d_%H-%M-%S}
+
+wandb: 
+  project: "3dgs"
+  entity: null
+  save_root: null
+  save_dir: ${scene.model_path}
+
+scene:
+  data_root: null
+  scene_name: null
+  source_path: ${scene.data_root}/${scene.scene_name}
+  model_path: ${output_root}/${scene.scene_name}/${model.name}_${exp_name}
+  images: "images"
+  resolution: -1
+  stride: 1
+  camera_name: "rgb" # "rgb", "slam"
+  pcd_stride: 1 # subsample the initial point cloud with this rate
+
+  aggregate: !!bool False # If true, try to aggregate sequences using path matching
+  
+  use_hdr: !!bool False # Use the hdr imaging in post-processing
+
+  load_seg_mask: ${lift.use_contr}
+  num_workers: 12
+
+  # Used for Aria datasets
+  no_novel: !!bool False # If true, all images are considered as seen
+  all_seen_train: !!bool False # If true, all seen images are in the training set
+
+  # Used for COLMAP, NerfSynthetic and Nerfies datasets
+  eval: !!bool True # If true, evaluation/test set will be used
+
+
+lift:
+  use_contr: !!bool False # whether to turn on the mask contrastive learning
+  contr_dim: ${model.dim_extra} # The feature dimensions used for learning instance segmentation
+  contr_multilabel: !!bool False # Use multilabel version for contrastive loss
+  sum_out_log: !!bool False # If set, the summation will be inside of the log in the contrastive loss. 
+  sim_exp: 1 # The exponent for the similarity in the contrastive loss (only used for multilabel)
+  det_folder_name: "gsa_det_none_sam" # The folder name to load the detections from
+  temperature: 100.0
+  lambda_contr: 0.1
+  n_samples: 4096
+
+pipe:
+  convert_SHs_python: !!bool False
+  compute_cov3D_python: !!bool False
+  debug: !!bool False
+

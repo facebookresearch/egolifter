@@ -1,0 +1,39 @@
+defaults:
+  - vanilla
+
+name: "unc_2d_unet"
+
+unet_pretrained: !!bool True
+unet_backbone: "mobilenetv3_small_050"
+unet_input_size: 224
+
+# Different modes of using the unet output
+# "softplus": unet output as the uncertainty map, softplus activation, loss based on Normal distribution
+# "sigmoid": unet output as the pixel-wise loss weighting, sigmoid activation, loss based on L2 regularization
+# "baseline": ignore unet output. Apply plain L2 reconstruction loss
+unet_acti: "sigmoid"
+
+# Hyperparam for unet_acti=="sigmoid"
+# The regularization loss used on the predicted mask
+unc_reg_loss: "l1" # ["l1", "l2"]
+
+# Hyperparam for unet_acti=="softplus"
+# The following only take effect when unet_acti=="softplus"
+unc_min: 0.03
+
+# The photometric loss used for training 3DGS models
+# "l2": L2 loss, used in NeRF-W
+# "3dgs": L1 and SSIM loss, used in 3DGS
+recon_loss: "l2"
+
+weight_loss_reg: 1e-2
+unet_lr: 1e-5
+
+# How to use the transient mask in contrastive loss
+# "thresh": only consider the contr loss for pixels whose static prob is larger than contr_weight_thresh
+# "on_sim": weigh the sim with the static prob of both pixels
+# "on_prob": weigh the exp-sim (prob) with the static prob of both pixels
+contr_weight_mode: "thresh"
+
+# Only used when cont_weight_mode == "thresh"
+contr_weight_thresh: 0.5

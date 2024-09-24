@@ -1,0 +1,4 @@
+name: "gaussian_grouping"
+sh_degree: 3
+
+gg_ckpt_folder: null

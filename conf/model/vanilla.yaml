@@ -1,0 +1,8 @@
+name: "vanilla"
+sh_degree: 3
+dim_extra: 0
+white_background: !!bool True
+
+# To be overrided in the subclass
+contr_weight_mode: null
+contr_weight_thresh: null

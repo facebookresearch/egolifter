@@ -1,0 +1,4 @@
+model_path: null
+model_baseline_path: null
+render_subset: "trainvalid"
+save_ext: "jpg"

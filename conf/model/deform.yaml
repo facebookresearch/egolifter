@@ -1,0 +1,29 @@
+defaults:
+  - vanilla
+
+name: "deform"
+
+# To be overrided in the subclass
+contr_weight_mode: null
+contr_weight_thresh: null
+
+# Deformation network architecture
+net_depth: 8
+net_width: 256
+
+use_d_xyz: !!bool True 
+use_d_rot: !!bool True
+use_d_scale: !!bool False # Use d_scale causes OOM error. Skip it. 
+use_prob: !!bool False # Whether to multiple d_xyz/d_rot with prob
+
+# regularization and training scheduling for deformation
+weight_l1_reg_prob: 0.0
+weight_l1_reg_xyz: 0.0
+weight_l1_reg_rot: 0.0
+
+opt_deform_start_iter: 0
+
+# config for the deformation model
+is_blender: !!bool False
+is_6dof: !!bool False
+noisy_fid_training: !!bool False
