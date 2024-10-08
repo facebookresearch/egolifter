@@ -149,6 +149,7 @@ class ProcessAriaDigitalTwin:
         
         # Initialize the data provider for this sequence
         paths_provider = AriaDigitalTwinDataPathsProvider(str(sequence_path))
+        
         all_device_serials = paths_provider.get_device_serial_numbers()
 
         print("all devices for sequence ", sequence_name, ":")
@@ -160,7 +161,11 @@ class ProcessAriaDigitalTwin:
         for selected_device_number in range(len(all_device_serials)):
             print("processing device number: ", selected_device_number)
             
-            data_paths = paths_provider.get_datapaths_by_device_num(selected_device_number, skeleton_flag=True)
+            # In the newest data format, the segmentations_with_skeleton.vrs file is somehow not included. 
+            # Raised an issue here: https://github.com/facebookresearch/projectaria_tools/issues/142
+            # data_paths = paths_provider.get_datapaths_by_device_num(selected_device_number, skeleton_flag=True)
+            data_paths = paths_provider.get_datapaths_by_device_num(selected_device_number, skeleton_flag=False)
+
             gt_provider = AriaDigitalTwinDataProvider(data_paths)
             
             os.makedirs(output_folder, exist_ok=True)
@@ -357,6 +362,7 @@ class ProcessAriaDigitalTwin:
                     "vignette_subpath": vignette_save_subpath,
                     "mask_subpath": mask_save_subpath,
                 })
+                
 
             print(f"There are {len(output_frame_metadata_device)}/{len(img_timestamps_ns)} valid frames in the output.")
             output_frame_metadata.extend(output_frame_metadata_device)
