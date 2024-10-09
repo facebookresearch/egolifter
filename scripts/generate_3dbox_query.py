@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 
+import glob
 import os, sys
 
 import json
@@ -49,8 +50,6 @@ class Generate3dboxQuery:
     data_root: Path
     scene_name: str
 
-    selected_device_number: int = 0
-    
     seed: int = 42
     
     def main(self) -> None:
@@ -65,10 +64,13 @@ class Generate3dboxQuery:
                 instance_ids_queried.add(int(instance_id))
         
         # Load the object pose information from the raw data folder
+        # Handle the new data format, where each device recording has its sequence. 
         raw_folder = self.raw_root / self.scene_name
-        paths_provider = AriaDigitalTwinDataPathsProvider(str(raw_folder))
+        subseq_paths = sorted(glob.glob(str(raw_folder) + "_*"))
+        assert len(subseq_paths) > 0, f"No subsequence found in {raw_folder}"
+        paths_provider = AriaDigitalTwinDataPathsProvider(subseq_paths[0])
         
-        data_paths = paths_provider.get_datapaths_by_device_num(self.selected_device_number, skeleton_flag=True)
+        data_paths = paths_provider.get_datapaths(skeleton_flag=False)
         gt_provider = AriaDigitalTwinDataProvider(data_paths)
         
         stream_id = StreamId("214-1")
