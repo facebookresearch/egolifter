@@ -169,10 +169,8 @@ class ProcessAriaDigitalTwin:
             print(f"Processing sequence {subseq_paths[selected_device_number]}")
             paths_provider = paths_providers[selected_device_number]
             
-            # In the newest data format, the segmentations_with_skeleton.vrs file is somehow not included. 
-            # Raised an issue here: https://github.com/facebookresearch/projectaria_tools/issues/142
-            # data_paths = paths_provider.get_datapaths_by_device_num(selected_device_number, skeleton_flag=True)
-            data_paths = paths_provider.get_datapaths(skeleton_flag=False)
+            # In the newest dataset format, each sequence only includes one device
+            data_paths = paths_provider.get_datapaths(skeleton_flag=True)
 
             gt_provider = AriaDigitalTwinDataProvider(data_paths)
             
