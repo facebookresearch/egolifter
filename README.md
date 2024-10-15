@@ -24,10 +24,7 @@ This repo contains the implementation of our recent work, EgoLifter: Open-world 
 ### Clone the repo
 
 ```bash
-git clone --recursive git@github.com:facebookresearch/egolifter.git
-
-# Or run the following if you forget the `--recursive` flag
-git submodule update --init --recursive
+git clone git@github.com:facebookresearch/egolifter.git
 ```
 
 ### Setup the environment and install packages. 
@@ -105,9 +102,9 @@ Environment variables in `source setup_env.bash` are needed for some scripts in 
 
 ### Download and Pre-processing
 
-First access ADT through this [link](https://www.projectaria.com/datasets/adt/) and download the `aria_digital_twin_dataset_download_urls.json` file, which contains the download links for the dataset. 
+First access ADT through this [link](https://www.projectaria.com/datasets/adt/) and download the `ADT_download_urls.json` file, which contains the download links for the dataset. 
 
-Then prepare a directory where you want to save the downloaded and processed dataset as follows. And put the `aria_digital_twin_dataset_download_urls.json` in the `$ADT_DATA_ROOT` directory. 
+Then prepare a directory where you want to save the downloaded and processed dataset as follows. And put the `ADT_download_urls.json` in the `$ADT_DATA_ROOT` directory. 
 
 ```bash
 # TODO: Change the following to directories where you want to save the dataset
@@ -117,7 +114,7 @@ export ADT_PROCESSED_ROOT=/path/to/adt_processed
 mkdir -p $ADT_DATA_ROOT
 mkdir -p $ADT_PROCESSED_ROOT
 
-cp /path/to/aria_digital_twin_dataset_download_urls.json $ADT_DATA_ROOT
+cp /path/to/ADT_download_urls.json $ADT_DATA_ROOT
 ```
 
 Then run the following script to download and process the dataset. 

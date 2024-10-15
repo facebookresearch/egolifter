@@ -214,7 +214,7 @@ def vis_result_fast(
     image: np.ndarray, 
     detections: sv.Detections, 
     classes: list[str], 
-    color: Color | ColorPalette = ColorPalette.default(), 
+    color: Color | ColorPalette = ColorPalette.DEFAULT, 
     instance_random_color: bool = False,
     draw_bbox: bool = True,
 ) -> np.ndarray:
@@ -223,7 +223,7 @@ def vis_result_fast(
     This is fast but of the same resolution of the input image, thus can be blurry. 
     '''
     # annotate image with detections
-    box_annotator = sv.BoundingBoxAnnotator(
+    box_annotator = sv.BoxAnnotator(
         color = color,
     )
     label_annontator = sv.LabelAnnotator(

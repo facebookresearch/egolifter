@@ -147,20 +147,31 @@ class ProcessAriaDigitalTwin:
         output_folder = self.output_root / sequence_name
         
         
-        # Initialize the data provider for this sequence
-        paths_provider = AriaDigitalTwinDataPathsProvider(str(sequence_path))
-        all_device_serials = paths_provider.get_device_serial_numbers()
-
-        print("all devices for sequence ", sequence_name, ":")
-        for idx, device_serial in enumerate(all_device_serials):
-            print("device number - ", idx, ": ", device_serial)
+        # Old data hierarchy: sequences - device - data
+        # New data hierarchy: sequences - data
+        # Now each sequence only contains one device. In this script, still keep the old data hierarchy.
+        # See: https://github.com/facebookresearch/projectaria_tools/blob/main/projects/AriaDigitalTwinDatasetTools/data_provider/AriaDigitalTwinDataPathsProvider.h#L38
+        subseq_paths = sorted(glob.glob(str(sequence_path) + "_*"))
+        
+        assert len(subseq_paths) > 0, "No subsequence found!"
+        
+        paths_providers = []
+        for subseq_path in subseq_paths:
+            # Initialize the data provider for this sequence
+            paths_provider = AriaDigitalTwinDataPathsProvider(subseq_path)
+            paths_providers.append(paths_provider)
             
+            subseq_device_serials = paths_provider.get_device_serial_numbers()
+            assert len(subseq_device_serials) == 1, f"More than one devices found in the subsequence: {subseq_device_serials}"
         
         output_frame_metadata = []
-        for selected_device_number in range(len(all_device_serials)):
-            print("processing device number: ", selected_device_number)
+        for selected_device_number in range(len(subseq_paths)):
+            print(f"Processing sequence {subseq_paths[selected_device_number]}")
+            paths_provider = paths_providers[selected_device_number]
             
-            data_paths = paths_provider.get_datapaths_by_device_num(selected_device_number, skeleton_flag=True)
+            # In the newest dataset format, each sequence only includes one device
+            data_paths = paths_provider.get_datapaths(skeleton_flag=True)
+
             gt_provider = AriaDigitalTwinDataProvider(data_paths)
             
             os.makedirs(output_folder, exist_ok=True)
@@ -357,6 +368,7 @@ class ProcessAriaDigitalTwin:
                     "vignette_subpath": vignette_save_subpath,
                     "mask_subpath": mask_save_subpath,
                 })
+                
 
             print(f"There are {len(output_frame_metadata_device)}/{len(img_timestamps_ns)} valid frames in the output.")
             output_frame_metadata.extend(output_frame_metadata_device)

@@ -13,7 +13,10 @@ set -e
 cp assets/vignette_imx577.png ${ADT_DATA_ROOT} # Vignette image for the RGB camera
 cp assets/vignette_ov7251.png ${ADT_DATA_ROOT} # Vignette image for the SLAM camera
 
-# Names of the scenes used in ADT benchmark in EgoLifter
+# The data format for ADT dataset has recently changed. See this link:
+# https://github.com/facebookresearch/projectaria_tools/blob/main/projects/AriaDigitalTwinDatasetTools/data_provider/AriaDigitalTwinDataPathsProvider.h#L38
+
+# scene names using the old data format
 declare -a SCENE_NAMES=(
     "Apartment_release_multiskeleton_party_seq121"
     "Apartment_release_multiskeleton_party_seq122"
@@ -33,12 +36,47 @@ declare -a SCENE_NAMES=(
     "Apartment_release_work_skeleton_seq140"
 )
 
+# scene names using the new format, only used for downloading script
+declare -a SCENE_NAMES_NEW=(
+    "Apartment_release_multiskeleton_party_seq121_71292"
+    "Apartment_release_multiskeleton_party_seq121_M1292"
+    "Apartment_release_multiskeleton_party_seq122_71292"
+    "Apartment_release_multiskeleton_party_seq122_M1292"
+    "Apartment_release_multiskeleton_party_seq123_71292"
+    "Apartment_release_multiskeleton_party_seq123_M1292"
+    "Apartment_release_multiskeleton_party_seq125_71292"
+    "Apartment_release_multiskeleton_party_seq125_M1292"
+    "Apartment_release_multiskeleton_party_seq126_71292"
+    "Apartment_release_multiskeleton_party_seq126_M1292"
+    "Apartment_release_multiskeleton_party_seq127_71292"
+    "Apartment_release_multiskeleton_party_seq127_M1292"
+    "Apartment_release_decoration_skeleton_seq137_M1292"
+    "Apartment_release_meal_skeleton_seq136_M1292"
+    "Apartment_release_multiuser_clean_seq116_M1292"
+    "Apartment_release_multiuser_cook_seq114_M1292"
+    "Apartment_release_multiuser_cook_seq143_M1292"
+    "Apartment_release_multiuser_meal_seq132_M1292"
+    "Apartment_release_multiuser_meal_seq140_M1292"
+    "Apartment_release_multiuser_party_seq140_M1292"
+    "Apartment_release_work_skeleton_seq131_M1292"
+    "Apartment_release_work_skeleton_seq140_M1292"
+)
+
+# # Only for debugging
+# declare -a SCENE_NAMES_NEW=(
+#     "Apartment_release_multiskeleton_party_seq121_71292"
+#     "Apartment_release_multiskeleton_party_seq121_M1292"
+# )
+# declare -a SCENE_NAMES=(
+#     "Apartment_release_multiskeleton_party_seq121"
+# )
+
 # Download
-for SCENE_NAME in "${SCENE_NAMES[@]}"; do
-    adt_benchmark_dataset_downloader \
-        -c ${ADT_DATA_ROOT}/aria_digital_twin_dataset_download_urls.json \
+for SCENE_NAME in "${SCENE_NAMES_NEW[@]}"; do
+    aria_dataset_downloader \
+        -c ${ADT_DATA_ROOT}/ADT_download_urls.json \
         -o ${ADT_DATA_ROOT}/ \
-        -d 0 1 5 6 \
+        -d 0 1 2 3 6 7 \
         -l ${SCENE_NAME}
 done
 
